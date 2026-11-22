@@ -1,0 +1,48 @@
+<!-- path: pages/eventos.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventos | Apostle Priscilla Vargas</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Eventos y Conferencias</h1>
+      <p>Invita a Apostle Priscilla Vargas a tu iglesia o evento</p>
+    </div>
+  </section>
+
+  <section class="page-content container">
+    <p>Apostle Priscilla Vargas ofrece conferencias, presentaciones del libro y mensajes de inspiración sobre la gratitud, la fe y el propósito de Dios.</p>
+    <div style="background: white; padding: 30px; border-radius: 12px; margin: 30px 0;">
+      <h3>Temas disponibles:</h3>
+      <ul style="margin-left: 20px; margin-top: 15px;">
+        <li>El Poder de la Gratitud</li>
+        <li>La Llave del Reino</li>
+        <li>Sanidad Interior y Liberación</li>
+        <li>Viviendo con Propósito</li>
+        <li>Fe que Transforma</li>
+      </ul>
+    </div>
+    <p>Para solicitar información, fechas disponibles o una cotización, completa el formulario de contacto.</p>
+    <a href="contacto.html" class="btn-primary">Solicitar Información</a>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo">👑 Apostle Priscilla Vargas</div>
+      <div>✉️ contacto@priscillavargas.com</div>
+    </div>
+  </footer>
+
+  <script>
+    fetch('/partials/header.html')
+      .then(r => r.text())
+      .then(html => document.body.insertAdjacentHTML('afterbegin', html));
+  </script>
+</body>
+</html>

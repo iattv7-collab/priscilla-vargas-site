@@ -1,0 +1,144 @@
+<!-- path: admin.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Apostle Priscilla Vargas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ephesis&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Georgia, serif;
+            background: #faf6ef;
+            color: #3d3428;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        button {
+            background: #c9a227;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #a68b1f;
+        }
+
+        .status {
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header
+        style="background:#faf6ef; border-bottom:1px solid #eadfce; margin:-30px -30px 30px -30px; padding:16px 30px; display:flex; justify-content:space-between; align-items:center;">
+        <a href="index.html"
+            style="text-decoration:none; font-family:'Ephesis', cursive; font-size:1.8rem; background:linear-gradient(90deg,#8d6f15,#382903); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">👑
+            Priscilla Vargas</a>
+        <a href="index.html"
+            style="background:#c9a227; color:white; padding:8px 16px; border-radius:6px; text-decoration:none; font-size:0.9rem;">Logout</a>
+    </header>
+
+    <div class="container">
+        <h1>Admin Panel</h1>
+
+        <div class="section">
+            <h2>Homepage Hero</h2>
+            <button type="button" onclick="editHero()" id="edit-hero-btn">Edit Homepage Hero</button>
+            <div id="hero-editor" style="margin-top:15px;"></div>
+            <button onclick="saveHero()" style="margin-top:10px;">Save Hero</button>
+            <div class="status" id="hero-status"></div>
+        </div>
+
+        <div class="section">
+            <h2>Books</h2>
+            <div style="display:grid; grid-template-columns: 240px 1fr; gap:20px;">
+                <div>
+                    <input type="text" id="book-search" placeholder="Search books..."
+                        style="width:100%; padding:8px; margin-bottom:10px;">
+                    <div id="books-list"
+                        style="max-height:400px; overflow-y:auto; border:1px solid #eee; border-radius:8px;"></div>
+                    <button type="button" onclick="startAddBook()" style="margin-top:10px; width:100%;">+ Add
+                        Book</button>
+                </div>
+                <div id="book-editor">
+                    <p style="color:#888;">Select a book from the list or click Add Book</p>
+                </div>
+            </div>
+            <button onclick="saveBooks()" style="margin-top:15px;">Save Books</button>
+            <div class="status" id="books-status"></div>
+        </div>
+
+        <div class="section">
+            <h2>Testimonials</h2>
+            <div style="display:grid; grid-template-columns: 240px 1fr; gap:20px;">
+                <div>
+                    <div id="testimonials-list"
+                        style="max-height:300px; overflow-y:auto; border:1px solid #eee; border-radius:8px;"></div>
+                    <button type="button" onclick="startAddTestimonial()" style="margin-top:10px; width:100%;">+ Add
+                        Testimonial</button>
+                </div>
+                <div id="testimonial-editor">
+                    <p style="color:#888;">Select a testimonial or click Add</p>
+                </div>
+            </div>
+            <button onclick="saveTestimonials()" style="margin-top:15px;">Save Testimonials</button>
+            <div class="status" id="testimonials-status"></div>
+        </div>
+
+        <div class="section">
+            <h2>Videos</h2>
+            <div style="display:grid; grid-template-columns: 240px 1fr; gap:20px;">
+                <div>
+                    <div id="videos-list"
+                        style="max-height:300px; overflow-y:auto; border:1px solid #eee; border-radius:8px;"></div>
+                    <button type="button" onclick="startAddVideo()" style="margin-top:10px; width:100%;">+ Add
+                        Video</button>
+                </div>
+                <div id="video-editor">
+                    <p style="color:#888;">Select a video or click Add</p>
+                </div>
+            </div>
+            <button onclick="saveVideos()" style="margin-top:15px;">Save Videos</button>
+            <div class="status" id="videos-status"></div>
+        </div>
+    </div>
+
+    <script src="js/admin-hero.js"></script>
+    <script src="js/admin-books.js"></script>
+    <script src="js/admin-testimonials.js"></script>
+    <script src="js/admin-videos.js"></script>
+</body>
+
+</html>

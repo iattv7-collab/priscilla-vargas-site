@@ -1,0 +1,149 @@
+<!-- path: index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apostle Priscilla Vargas | La Llave del Reino</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main>
+    <section class="hero container">
+      <div class="hero-author">
+        <img src="images/author-hires.jpg" alt="Apostle Priscilla Vargas">
+      </div>
+      <div class="hero-text">
+        <h1>Descubre la llave para<br>una vida de <em>gratitud</em></h1>
+        <p>Con su libro <strong>La Llave del Reino: El Poder de la Gratitud</strong>, Apostle Priscilla Vargas te revela cómo la gratitud puede abrir puertas, transformar tu perspectiva y alinearte con los propósitos de Dios para tu vida.</p>
+        <div class="hero-buttons">
+          <a href="pages/comprar.html" class="btn-primary">🛒 Ordenar Libro</a>
+          <a href="pages/libros.html" class="btn-secondary">Leer Más ›</a>
+        </div>
+      </div>
+      <div class="hero-book">
+        <img src="images/book-cover.jpg" alt="La Llave del Reino">
+        <div class="book-stand"></div>
+      </div>
+    </section>
+
+    <section class="about-section container">
+      <div class="about-grid">
+        <img src="images/author-real.jpg" alt="Sobre Apostle Priscilla Vargas">
+        <div class="about-text">
+          <h2>Sobre Apostle Priscilla Vargas</h2>
+          <p>Autora, conferencista y mentora, apasionada por inspirar a otros a vivir una vida de fe, gratitud y propósito. A través de sus libros, enseñanzas y mensajes, comparte principios bíblicos prácticos que traen transformación, sanidad y esperanza.</p>
+          <a href="pages/sobre.html" class="link">Conoce más sobre la autora ›</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="book-section container">
+      <h2 class="section-title">La Llave del Reino: El Poder de la Gratitud</h2>
+      <div class="crown">👑</div>
+      <div class="features">
+        <div class="feature">
+          <div class="icon">📖</div>
+          <h3>Inspiración diaria</h3>
+          <p>Descubre verdades que renuevan tu mente y fortalecen tu espíritu.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">🌿</div>
+          <h3>Reflexión espiritual</h3>
+          <p>Profundiza en el poder de la gratitud a través de enseñanzas prácticas y aplicables.</p>
+        </div>
+        <div class="feature">
+          <div class="icon">👑</div>
+          <h3>Crecimiento en la fe</h3>
+          <p>Desarrolla una actitud de gratitud que te acerque más a Dios y active Sus promesas en tu vida.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials">
+      <div class="container">
+        <h2 class="section-title">Lo que dicen los lectores</h2>
+        <div class="testimonial-grid"></div>
+      </div>
+    </section>
+
+    <section class="events-cta">
+      <div class="container">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
+          <div style="font-size: 3rem;">📅</div>
+          <div>
+            <h2>Invita a Apostle Priscilla Vargas a tu iglesia o evento</h2>
+            <p>Conferencias, presentaciones del libro y mensajes de inspiración sobre la gratitud, la fe y el propósito de Dios.</p>
+          </div>
+          <a href="pages/contacto.html" class="btn-primary">📅 Solicitar Información</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo">👑 Apostle Priscilla Vargas</div>
+      <div>
+        <span>Sígueme en:</span>
+        <a href="#" class="socials">IG</a>
+        <a href="#" class="socials">FB</a>
+        <a href="#" class="socials">YT</a>
+        <a href="#" class="socials">TT</a>
+      </div>
+      <div>
+        ✉️ contacto@priscillavargas.com<br>
+        🌐 www.priscillavargas.com
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    fetch('/partials/header.html')
+      .then(r => r.text())
+      .then(html => document.body.insertAdjacentHTML('afterbegin', html));
+  </script>
+
+  <script>
+    const API = 'http://localhost:3000';
+
+    async function loadHero() {
+      try {
+        const res = await fetch(`${API}/data/hero.json`);
+        const hero = await res.json();
+        const heroText = document.querySelector('.hero-text h1');
+        const heroDesc = document.querySelector('.hero-text p');
+        const heroImg = document.querySelector('.hero-book img');
+        const heroBtn = document.querySelector('.hero-buttons .btn-primary');
+        if (heroText && hero.headline) heroText.innerHTML = hero.headline;
+        if (heroDesc && hero.description) heroDesc.innerHTML = hero.description;
+        if (heroImg && hero.image) heroImg.src = hero.image;
+        if (heroBtn && hero.buttonText) {
+          heroBtn.textContent = hero.buttonText;
+          if (hero.buttonLink) heroBtn.href = hero.buttonLink;
+        }
+      } catch (e) { console.log('Could not load hero data'); }
+    }
+
+    async function loadTestimonials() {
+      try {
+        const res = await fetch(`${API}/data/testimonials.json`);
+        const items = await res.json();
+        const grid = document.querySelector('.testimonial-grid');
+        if (!grid) return;
+        grid.innerHTML = items.map(t => `
+          <div class="testimonial">
+            <p class="quote">“${t.quote}”</p>
+            <p class="author-name">— ${t.author}</p>
+            ${t.video ? `<div style="margin-top:12px;"><iframe width="100%" height="180" src="https://www.youtube.com/embed/${(t.video.split('v=')[1] || '').split('&')[0] || t.video.split('/').pop()}" frameborder="0" allowfullscreen></iframe></div>` : ''}
+          </div>
+        `).join('');
+      } catch (e) { console.log('Could not load testimonials'); }
+    }
+
+    loadHero();
+    loadTestimonials();
+  </script>
+</body>
+</html>

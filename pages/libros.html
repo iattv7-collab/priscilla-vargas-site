@@ -1,0 +1,145 @@
+<!-- path: pages/libros.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Libros | Apostle Priscilla Vargas</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    .books-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 40px;
+      padding: 40px 0 60px;
+    }
+    .books-list {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .book-item {
+      padding: 16px 18px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .book-item:hover, .book-item.active {
+      background: #faf6ef;
+    }
+    .book-item h4 { margin: 0 0 4px; font-size: 1rem; color: var(--brown); }
+    .book-item p { margin: 0; font-size: 0.85rem; color: #888; }
+    .book-detail {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .book-detail img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+    @media (max-width: 768px) {
+      .books-layout { grid-template-columns: 1fr; }
+      .books-list { max-height: 300px; overflow-y: auto; }
+    }
+  </style>
+</head>
+<body>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Libros</h1>
+      <p>Enseñanzas que edifican, sanan y transforman</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="books-layout">
+      <div>
+        <input type="text" class="search-box" id="search" placeholder="Buscar libros...">
+        <div class="books-list" id="books-list"></div>
+      </div>
+      <div class="book-detail" id="book-detail">
+        <p style="color:#888;">Selecciona un libro de la lista</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo">👑 Apostle Priscilla Vargas</div>
+      <div>✉️ contacto@priscillavargas.com</div>
+    </div>
+  </footer>
+
+  <script>
+    fetch('/partials/header.html')
+      .then(r => r.text())
+      .then(html => document.body.insertAdjacentHTML('afterbegin', html));
+  </script>
+
+  <script>
+    const API = 'http://localhost:3000';
+    let allBooks = [];
+
+    async function loadBooks() {
+      try {
+        const res = await fetch(`${API}/data/books.json`);
+        allBooks = (await res.json()).filter(b => b.published !== false);
+        renderList(allBooks);
+        if (allBooks.length) showBook(0);
+      } catch (e) {
+        console.log('Could not load books');
+      }
+    }
+
+    function renderList(books) {
+      const list = document.getElementById('books-list');
+      list.innerHTML = books.map((book, i) => `
+        <div class="book-item" onclick="showBook(${i})" data-index="${i}">
+          <h4>${book.title}</h4>
+          <p>${book.author || ''}</p>
+        </div>
+      `).join('');
+    }
+
+    function showBook(index) {
+      const book = allBooks[index];
+      if (!book) return;
+      document.querySelectorAll('.book-item').forEach(el => el.classList.remove('active'));
+      document.querySelector(`.book-item[data-index="${index}"]`)?.classList.add('active');
+
+      document.getElementById('book-detail').innerHTML = `
+        <img src="../${book.cover}" alt="${book.title}">
+        <h2>${book.title}</h2>
+        <p style="color:#888; margin-bottom:12px;">${book.author || ''}</p>
+        <p>${book.description || ''}</p>
+        <a href="comprar.html" class="btn-primary" style="margin-top:20px;">Ordenar Ahora</a>
+      `;
+    }
+
+    document.getElementById('search').addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      const filtered = allBooks.filter(b => 
+        b.title.toLowerCase().includes(q) || (b.author || '').toLowerCase().includes(q)
+      );
+      renderList(filtered);
+      if (filtered.length) showBook(allBooks.indexOf(filtered[0]));
+    });
+
+    loadBooks();
+  </script>
+</body>
+</html>

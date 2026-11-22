@@ -1,0 +1,63 @@
+<!-- path: pages/contacto.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto | Apostle Priscilla Vargas</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Contacto</h1>
+      <p>Estamos aquí para servirte</p>
+    </div>
+  </section>
+
+  <section class="page-content container">
+    <form action="#" method="post" style="background: white; padding: 30px; border-radius: 12px;">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="asunto">Asunto</label>
+        <select id="asunto" name="asunto">
+          <option>Información general</option>
+          <option>Ordenar libro</option>
+          <option>Invitación a evento</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn-primary">Enviar Mensaje</button>
+    </form>
+    <div style="margin-top: 40px; text-align: center;">
+      <p>✉️ contacto@priscillavargas.com</p>
+      <p>Síguenos en redes sociales para más contenido inspirador.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-logo">👑 Apostle Priscilla Vargas</div>
+      <div>🌐 www.priscillavargas.com</div>
+    </div>
+  </footer>
+
+  <script>
+    fetch('/partials/header.html')
+      .then(r => r.text())
+      .then(html => document.body.insertAdjacentHTML('afterbegin', html));
+  </script>
+</body>
+</html>
