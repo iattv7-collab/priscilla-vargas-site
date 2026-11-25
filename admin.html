@@ -61,84 +61,74 @@
 </head>
 
 <body>
-    <header
-        style="background:#faf6ef; border-bottom:1px solid #eadfce; margin:-30px -30px 30px -30px; padding:16px 30px; display:flex; justify-content:space-between; align-items:center;">
-        <a href="index.html"
-            style="text-decoration:none; font-family:'Ephesis', cursive; font-size:1.8rem; background:linear-gradient(90deg,#8d6f15,#382903); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">👑
-            Priscilla Vargas</a>
-        <a href="index.html"
-            style="background:#c9a227; color:white; padding:8px 16px; border-radius:6px; text-decoration:none; font-size:0.9rem;">Logout</a>
-    </header>
-
     <div class="container">
-        <h1>Admin Panel</h1>
-
-        <div class="section">
-            <h2>Homepage Hero</h2>
-            <button type="button" onclick="editHero()" id="edit-hero-btn">Edit Homepage Hero</button>
-            <div id="hero-editor" style="margin-top:15px;"></div>
-            <button onclick="saveHero()" style="margin-top:10px;">Save Hero</button>
-            <div class="status" id="hero-status"></div>
-        </div>
-
-        <div class="section">
-            <h2>Books</h2>
-            <div style="display:grid; grid-template-columns: 240px 1fr; gap:20px;">
-                <div>
-                    <input type="text" id="book-search" placeholder="Search books..."
-                        style="width:100%; padding:8px; margin-bottom:10px;">
-                    <div id="books-list"
-                        style="max-height:400px; overflow-y:auto; border:1px solid #eee; border-radius:8px;"></div>
-                    <button type="button" onclick="startAddBook()" style="margin-top:10px; width:100%;">+ Add
-                        Book</button>
-                </div>
-                <div id="book-editor">
-                    <p style="color:#888;">Select a book from the list or click Add Book</p>
-                </div>
-            </div>
-            <button onclick="saveBooks()" style="margin-top:15px;">Save Books</button>
-            <div class="status" id="books-status"></div>
-        </div>
-
-        <div class="section">
-            <h2>Testimonials</h2>
-            <div style="display:grid; grid-template-columns: 240px 1fr; gap:20px;">
-                <div>
-                    <div id="testimonials-list"
-                        style="max-height:300px; overflow-y:auto; border:1px solid #eee; border-radius:8px;"></div>
-                    <button type="button" onclick="startAddTestimonial()" style="margin-top:10px; width:100%;">+ Add
-                        Testimonial</button>
-                </div>
-                <div id="testimonial-editor">
-                    <p style="color:#888;">Select a testimonial or click Add</p>
-                </div>
-            </div>
-            <button onclick="saveTestimonials()" style="margin-top:15px;">Save Testimonials</button>
-            <div class="status" id="testimonials-status"></div>
-        </div>
-
-        <div class="section">
-            <h2>Videos</h2>
-            <div style="display:grid; grid-template-columns: 240px 1fr; gap:20px;">
-                <div>
-                    <div id="videos-list"
-                        style="max-height:300px; overflow-y:auto; border:1px solid #eee; border-radius:8px;"></div>
-                    <button type="button" onclick="startAddVideo()" style="margin-top:10px; width:100%;">+ Add
-                        Video</button>
-                </div>
-                <div id="video-editor">
-                    <p style="color:#888;">Select a video or click Add</p>
-                </div>
-            </div>
-            <button onclick="saveVideos()" style="margin-top:15px;">Save Videos</button>
-            <div class="status" id="videos-status"></div>
-        </div>
+        <a href="index.html">Volver al sitio</a>
+        <h1>Administración</h1>
+        <section class="section" id="login-panel">
+            <form id="login-form">
+                <label for="email">Correo electrónico</label>
+                <input id="email" type="email" autocomplete="username" required>
+                <label for="password">Contraseña</label>
+                <input id="password" type="password" autocomplete="current-password" required>
+                <button id="login-button" disabled>Iniciar sesión</button>
+            </form>
+        </section>
+        <section class="section" id="admin-panel" hidden>
+            <h2>Acceso autorizado</h2>
+            <p>La conexión con Firebase está activa. Los editores de contenido se habilitarán en la siguiente etapa.</p>
+            <button type="button" id="logout-button">Cerrar sesión</button>
+        </section>
+        <p id="auth-status" role="status">Conectando con Firebase…</p>
     </div>
-
-    <script src="js/admin-hero.js"></script>
-    <script src="js/admin-books.js"></script>
-    <script src="js/admin-testimonials.js"></script>
-    <script src="js/admin-videos.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+        const app = initializeApp({
+            apiKey: "AIzaSyBT9XQP1W_agcc6YyVdwSIRwpIKI4oyqaI",
+            authDomain: "priscilla-vargas.firebaseapp.com",
+            projectId: "priscilla-vargas",
+            storageBucket: "priscilla-vargas.firebasestorage.app",
+            messagingSenderId: "332544919827",
+            appId: "1:332544919827:web:caf0403849b334b39ff2e6"
+        });
+        const auth = getAuth(app), db = getFirestore(app);
+        const $ = id => document.getElementById(id);
+        const status = $("auth-status");
+        onAuthStateChanged(auth, async user => {
+            $("admin-panel").hidden = true;
+            $("login-panel").hidden = !!user;
+            $("login-button").disabled = true;
+            if (!user) {
+                $("login-button").disabled = false;
+                status.textContent = "";
+                return;
+            }
+            status.textContent = "Verificando permisos…";
+            try {
+                const admin = await getDoc(doc(db, "admins", user.uid));
+                if (!admin.exists() || admin.data().role !== "admin") throw new Error("No autorizado");
+                if (auth.currentUser?.uid !== user.uid) return;
+                $("admin-panel").hidden = false;
+                status.textContent = "Sesión iniciada: " + user.email;
+            } catch {
+                await signOut(auth);
+                status.textContent = "No se pudo verificar el acceso de administrador.";
+            }
+        });
+        $("login-form").addEventListener("submit", async e => {
+            e.preventDefault();
+            $("login-button").disabled = true;
+            try {
+                await signInWithEmailAndPassword(auth, $("email").value.trim(), $("password").value);
+                $("password").value = "";
+            } catch {
+                status.textContent = "No se pudo iniciar sesión. Verifique sus datos e intente nuevamente.";
+                $("login-button").disabled = false;
+            }
+        });
+        $("logout-button").addEventListener("click", () => signOut(auth).catch(() => { status.textContent = "No se pudo cerrar la sesión."; }));
+    </script>
 </body>
 
 </html>
