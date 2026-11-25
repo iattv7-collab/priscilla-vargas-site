@@ -105,7 +105,6 @@
         if (!value) continue;
         const el=document.createElement(tag); el.textContent=value; detail.append(el);
       }
-      if (typeof book.price==="number" && Number.isFinite(book.price)) { const p=document.createElement("p"); p.textContent=new Intl.NumberFormat("es-US",{style:"currency",currency:"USD"}).format(book.price); detail.append(p); }
       const url=amazonURL(book.amazonUrl);
       if(url) { const a=document.createElement("a"); a.href=url; a.className="btn-primary"; a.style.marginTop="20px"; a.textContent="Comprar en Amazon"; a.target="_blank"; a.rel="noopener noreferrer"; detail.append(a); }
     }
