@@ -4,32 +4,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apostle Priscilla Vargas | La Llave del Reino</title>
+  <title>Apostle Priscilla Vargas | Autora y Conferencista</title>
+  <meta name="description" content="Conoce a Apostle Priscilla Vargas, autora de La Llave del Reino, conferencista y mentora cristiana. Descubre sus libros y solicita información sobre conferencias.">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Priscilla Vargas","alternateName":"Apostle Priscilla Vargas","jobTitle":"Autora y conferencista","knowsAbout":["Literatura cristiana","Gratitud","Fe cristiana"]}</script>
   <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
   <main>
-    <section class="hero container">
-      <div class="hero-author">
-        <img src="images/author-hires.jpg" alt="Apostle Priscilla Vargas">
-        <p style="margin-top: 16px; font-size: 0.95rem; line-height: 1.5;">
-          Autora, conferencista y mentora.
-          Con más de 20 años de trayectoria ministerial, dedicada a llevar el mensaje transformador de Jesucristo, ministrando sanidad interior, liberación y restauración por el poder del Espíritu Santo y fundamentada en la Palabra de Dios.
-          <a href="pages/sobre.html" style="color: var(--gold-dark); display: block; margin-top: 6px;">Conoce más sobre la autora ›</a>
-        </p>
+    <section class="author-intro container">
+      <img src="images/author-hires.jpg" alt="Apostle Priscilla Vargas" width="340" height="480">
+      <div>
+        <p class="author-kicker">Autora · Conferencista · Mentora</p>
+        <h1>Apostle Priscilla Vargas</h1>
+        <p>Con más de 20 años de trayectoria ministerial, dedicada a llevar el mensaje transformador de Jesucristo, ministrando sanidad interior, liberación y restauración por el poder del Espíritu Santo y fundamentada en la Palabra de Dios.</p>
+        <a class="btn-primary" href="pages/sobre.html">Conoce a Priscilla</a>
       </div>
-      <div class="hero-text">
-        <h1>Descubre la llave para<br>una vida de <em>gratitud</em></h1>
-        <p>Con su libro <strong>La Llave del Reino: El Poder de la Gratitud</strong>, Apostle Priscilla Vargas te revela cómo la gratitud puede abrir puertas, transformar tu perspectiva y alinearte con los propósitos de Dios para tu vida.</p>
-        <div class="hero-buttons">
-          <a href="pages/comprar.html" class="btn-primary">🛒 Ordenar Libro</a>
-          <a href="pages/libros.html" class="btn-secondary">Leer Más ›</a>
-        </div>
-      </div>
-      <div class="hero-book">
-        <img src="images/book-cover.jpg" alt="La Llave del Reino">
-        <div class="book-stand"></div>
+    </section>
+    <section class="featured-book container" aria-labelledby="featured-title">
+      <img src="images/book-cover.jpg" alt="Portada de La Llave del Reino: El Poder de la Gratitud" loading="lazy">
+      <div>
+        <p class="author-kicker">Libro destacado</p>
+        <h2 id="featured-title">La Llave del Reino: El Poder de la Gratitud</h2>
+        <p>Descubre cómo la gratitud puede abrir puertas, transformar tu perspectiva y alinearte con los propósitos de Dios para tu vida.</p>
+        <a class="btn-primary" href="pages/libros.html">Descubre sus libros</a>
       </div>
     </section>
 
@@ -55,7 +53,7 @@
       </div>
     </section>
 
-    <section class="testimonials">
+    <section class="testimonials" hidden>
       <div class="container">
         <h2 class="section-title">Lo que dicen los lectores</h2>
         <div class="testimonial-grid"></div>
@@ -80,13 +78,6 @@
     <div class="container footer-inner">
       <div class="footer-logo">👑 Apostle Priscilla Vargas</div>
       <div>
-        <span>Sígueme en:</span>
-        <a href="#" class="socials">IG</a>
-        <a href="#" class="socials">FB</a>
-        <a href="#" class="socials">YT</a>
-        <a href="#" class="socials">TT</a>
-      </div>
-      <div>
         ✉️ contacto@priscillavargas.com<br>
         🌐 www.priscillavargas.com
       </div>
@@ -100,43 +91,29 @@
   </script>
 
   <script>
-    const API = 'http://localhost:3000';
-
-    async function loadHero() {
-      try {
-        const res = await fetch(`${API}/data/hero.json`);
-        const hero = await res.json();
-        const heroText = document.querySelector('.hero-text h1');
-        const heroDesc = document.querySelector('.hero-text p');
-        const heroImg = document.querySelector('.hero-book img');
-        const heroBtn = document.querySelector('.hero-buttons .btn-primary');
-        if (heroText && hero.headline) heroText.innerHTML = hero.headline;
-        if (heroDesc && hero.description) heroDesc.innerHTML = hero.description;
-        if (heroImg && hero.image) heroImg.src = hero.image;
-        if (heroBtn && hero.buttonText) {
-          heroBtn.textContent = hero.buttonText;
-          if (hero.buttonLink) heroBtn.href = hero.buttonLink;
-        }
-      } catch (e) { console.log('Could not load hero data'); }
-    }
-
     async function loadTestimonials() {
       try {
-        const res = await fetch(`${API}/data/testimonials.json`);
+        const res = await fetch("/data/testimonials.json");
         const items = await res.json();
         const grid = document.querySelector('.testimonial-grid');
-        if (!grid) return;
-        grid.innerHTML = items.map(t => `
-          <div class="testimonial">
-            <p class="quote">“${t.quote}”</p>
-            <p class="author-name">— ${t.author}</p>
-            ${t.video ? `<div style="margin-top:12px;"><iframe width="100%" height="180" src="https://www.youtube.com/embed/${(t.video.split('v=')[1] || '').split('&')[0] || t.video.split('/').pop()}" frameborder="0" allowfullscreen></iframe></div>` : ''}
-          </div>
-        `).join('');
+        if (!grid || !Array.isArray(items) || !items.length) return;
+        for (const t of items) {
+          if (!t.quote || !t.author) continue;
+          const card = document.createElement('article');
+          card.className = 'testimonial';
+          const quote = document.createElement('p');
+          quote.className = 'quote';
+          quote.textContent = t.quote;
+          const author = document.createElement('p');
+          author.className = 'author-name';
+          author.textContent = t.author;
+          card.append(quote, author);
+          grid.append(card);
+        }
+        if (grid.childElementCount) grid.closest('section').hidden = false;
       } catch (e) { console.log('Could not load testimonials'); }
     }
 
-    loadHero();
     loadTestimonials();
   </script>
 </body>
