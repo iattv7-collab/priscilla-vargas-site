@@ -38,13 +38,13 @@ export function initBooks() {
  function closeEditor() {
   closeWorkspace("books");
   reset(); form.hidden=true; list.hidden=false; $("book-new").hidden=false;
-  $("book-import").hidden=!!list.querySelector("button");
+  $("book-import").hidden=true;
  }
  function setBusy(value) { busy = value; for (const el of $("book-manager").querySelectorAll("button,input,textarea")) el.disabled = value; }
  async function refresh() {
   const snap = await getDocs(collection(db,"books"));
   list.replaceChildren();
-  $("book-import").hidden = !snap.empty;
+  $("book-import").hidden = true;
   for (const d of snap.docs) {
    const b = d.data(), button = document.createElement("button");
    button.type = "button"; button.textContent = b.title + (b.published ? " — Publicado" : " — Borrador");
@@ -60,7 +60,7 @@ export function initBooks() {
    });
    list.append(button, document.createElement("br"));
   }
-  if (snap.empty) list.textContent = "No hay libros. Puedes importar el libro existente.";
+  if (snap.empty) list.textContent = "No hay libros. Puedes agregar un nuevo libro.";
  }
  async function action(fn) {
   if (busy) return;
@@ -103,16 +103,7 @@ export function initBooks() {
   });
  };
  $("book-delete").onclick = () => { if (selected && confirm("¿Eliminar este libro permanentemente?")) action(async()=>{ await deleteDoc(doc(db,"books",selected)); closeEditor(); await refresh(); }); };
- $("book-import").onclick = () => action(async()=>{
-  const response = await fetch("/data/books.json");
-  if (!response.ok) throw Error("No se pudo leer el catálogo anterior.");
-  const entries = (await response.json()).filter(b => typeof b.title === "string" && b.title.trim());
-  for (const b of entries) {
-   const ref = doc(db,"books","legacy-"+b.id);
-   await runTransaction(db,async tx=>{ if (!(await tx.get(ref)).exists()) tx.set(ref,{title:b.title,author:b.author||"",description:b.description||"",cover:b.cover||"",published:b.published===true,amazonUrl:""}); });
-  }
-  await refresh();
- });
+
  closeEditor();
  return action(refresh);
 }
