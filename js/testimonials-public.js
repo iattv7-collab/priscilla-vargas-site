@@ -1,7 +1,8 @@
 import {db} from "./firebase-site.js";
 import {youtubeId} from "./testimonial-video.js";
 import {collection,query,where,getDocs} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-const grid=document.querySelector(".testimonial-grid");
+export async function initTestimonials(root){
+const grid=root.querySelector(".testimonial-grid");
 try{
  const snap=await getDocs(query(collection(db,"testimonials"),where("published","==",true)));
  for(const d of snap.docs){
@@ -17,3 +18,5 @@ try{
  }
  grid.closest("section").hidden=!grid.childElementCount;
 }catch(e){console.error("No se pudieron cargar los testimonios",e);}
+
+}
