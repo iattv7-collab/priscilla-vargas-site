@@ -1,11 +1,33 @@
-import { db, amazonURL, coverURL } from "./firebase-site.js";
+import { app, db, amazonURL, coverURL } from "./firebase-site.js";
 import { collection, doc, getDocs, setDoc, deleteDoc, runTransaction } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-storage.js";
+const storage = getStorage(app);
 export function initBooks() {
  const $ = id => document.getElementById(id);
  const form = $("book-form"), list = $("book-list"), status = $("book-status");
- let selected = null, busy = false;
+ let selected = null, busy = false, pendingFile = null, previewObjectURL = null;
+ const fileInput = $("cover-file"), preview = $("cover-preview"), drop = $("cover-drop");
+ function showPreview() {
+  if (previewObjectURL) URL.revokeObjectURL(previewObjectURL);
+  previewObjectURL = pendingFile ? URL.createObjectURL(pendingFile) : null;
+  const url = previewObjectURL || coverURL($("book-cover").value.trim());
+  preview.hidden = !url;
+  if (url) preview.src = url; else preview.removeAttribute("src");
+ }
+ function chooseFile(file) {
+  if (busy || !file) return;
+  if (!["image/jpeg","image/png","image/webp"].includes(file.type) || file.size === 0 || file.size > 5*1024*1024) {
+   fileInput.value = ""; pendingFile = null; showPreview(); status.textContent = "Selecciona una imagen JPEG, PNG o WebP de hasta 5 MB."; return;
+  }
+  pendingFile = file; showPreview(); status.textContent = "Imagen seleccionada. Se subirá al guardar el libro.";
+ }
+ fileInput.onchange = () => { if (fileInput.files[0]) chooseFile(fileInput.files[0]); };
+ drop.ondragover = e => { e.preventDefault(); if (!busy) drop.style.background="#fff2d4"; };
+ drop.ondragleave = () => { drop.style.background=""; };
+ drop.ondrop = e => { e.preventDefault(); drop.style.background=""; if (!busy && e.dataTransfer.files[0]) { fileInput.value=""; chooseFile(e.dataTransfer.files[0]); } };
+ $("book-cover").oninput = () => { pendingFile=null; fileInput.value=""; showPreview(); };
  const fields = ["title","author","description","cover","amazonUrl"];
- function reset() { selected = null; form.reset(); $("book-author").value = "Apostle Priscilla Vargas"; $("book-delete").hidden = true; }
+ function reset() { selected = null; form.reset(); $("book-author").value = "Apostle Priscilla Vargas"; $("book-delete").hidden = true; pendingFile=null; showPreview(); }
  function setBusy(value) { busy = value; for (const el of $("book-manager").querySelectorAll("button,input,textarea")) el.disabled = value; }
  async function refresh() {
   const snap = await getDocs(collection(db,"books"));
@@ -20,6 +42,7 @@ export function initBooks() {
     $("book-published").checked = b.published === true;
     $("book-featured").checked = b.featured === true;
     $("book-delete").hidden = false;
+    pendingFile=null; fileInput.value=""; showPreview();
    });
    list.append(button, document.createElement("br"));
   }
@@ -44,6 +67,15 @@ export function initBooks() {
    data.featured = $("book-featured").checked;
    if (data.featured && !data.published) throw Error("Publica el libro para destacarlo.");
    const ref = selected ? doc(db,"books",selected) : doc(collection(db,"books"));
+   if (pendingFile) {
+    const extensions = {"image/jpeg":"jpg","image/png":"png","image/webp":"webp"};
+    const object = storageRef(storage, "public/books/"+ref.id+"/"+crypto.randomUUID()+"."+extensions[pendingFile.type]);
+    status.textContent = "Subiendo portada…";
+    await uploadBytes(object,pendingFile,{contentType:pendingFile.type,cacheControl:"public,max-age=86400"});
+    data.cover = await getDownloadURL(object);
+    $("book-cover").value=data.cover;
+    pendingFile=null; fileInput.value=""; showPreview();
+   }
    if (data.featured) {
     const all = await getDocs(collection(db,"books"));
     await runTransaction(db, async tx => {
