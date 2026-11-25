@@ -17,8 +17,49 @@
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="../css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <style>
-    .page-hero { padding: 22px 0; }
+  
+</head>
+<body>
+<header class="site-header">
+  <div class="brand-stage">
+    <svg class="brand-ribbons" viewBox="0 0 1400 260" preserveAspectRatio="none" aria-hidden="true">
+      <defs><linearGradient id="ribbon-gold" x1="0" y1="0" x2=".65" y2="1"><stop stop-color="#9b580c"/><stop offset=".22" stop-color="#ffdf7a"/><stop offset=".37" stop-color="#fff5c5"/><stop offset=".55" stop-color="#c68b26"/><stop offset=".76" stop-color="#f9d579"/><stop offset="1" stop-color="#80500c"/></linearGradient><linearGradient id="ribbon-edge"><stop stop-color="#b57518"/><stop offset=".5" stop-color="#fff5c7"/><stop offset="1" stop-color="#d69b36"/></linearGradient></defs>
+      <g fill="url(#ribbon-gold)" stroke="url(#ribbon-edge)" stroke-width="1.4">
+        <path d="M0 110 Q70 218 285 260 L165 260 Q52 236 0 157Z"/>
+        <path d="M0 174 Q74 244 220 260 L100 260 Q38 243 0 210Z"/>
+        <path d="M1035 0 Q1200 16 1400 120 L1400 75 Q1240 0 1180 0Z"/>
+        <path d="M1155 0 Q1285 54 1400 59 L1400 0Z"/>
+      </g>
+    </svg>
+    <a href="/" class="brand-lockup" aria-label="Apostle Priscilla Vargas — Inicio">
+      <svg class="brand-emblem" viewBox="0 0 180 156" aria-hidden="true">
+        <defs><linearGradient id="emblem-gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff9d5"/><stop offset=".25" stop-color="#f5cf6d"/><stop offset=".48" stop-color="#a86613"/><stop offset=".72" stop-color="#ffe8a0"/><stop offset="1" stop-color="#d3982e"/></linearGradient></defs>
+        <g fill="none" stroke="url(#emblem-gold)" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke-width="5" d="M47 27L62 40L73 23L90 39L107 23L118 40L133 27L123 59Q90 48 57 59Z"/>
+          <path stroke-width="4" d="M59 65Q90 54 121 65"/>
+          <path stroke-width="5" d="M90 145Q62 112 13 124L28 69Q62 69 90 92Q118 69 152 69L167 124Q118 112 90 145Z"/>
+          <path stroke-width="3" d="M90 145Q65 130 5 138L19 87M90 145Q115 130 175 138L161 87M90 92V136"/>
+        </g><g fill="#ffe8a0"><circle cx="47" cy="26" r="4"/><circle cx="73" cy="22" r="4"/><circle cx="107" cy="22" r="4"/><circle cx="133" cy="26" r="4"/><path d="M90 5L96 15L90 25L84 15Z"/></g>
+      </svg>
+      <span class="brand-type">
+        <span class="brand-apostle">Apostle</span>
+        <span class="brand-name">Priscilla Vargas</span>
+        <span class="brand-tagline">Autora <span>|</span> Conferencista <span>|</span> Mentora</span>
+      </span>
+    </a>
+    <span class="brand-glint" aria-hidden="true"></span>
+  </div>
+  <nav class="brand-navigation" aria-label="Navegación principal"><ul>
+    <li><a href="/">Inicio</a></li>
+    <li><a href="/pages/sobre.html">Sobre Priscilla</a></li>
+    <li><a href="/pages/libros.html" aria-current="page">Libros</a></li>
+    <li><a href="/pages/eventos.html">Conferencias</a></li>
+    <li><a href="/pages/contacto.html">Contacto</a></li>
+  </ul></nav>
+</header>
+<div id="site-content" data-page="books">
+<style>
+    [data-page="books"] .page-hero { padding: 22px 0; }
     .books-layout {
       display: grid;
       grid-template-columns: 280px minmax(0, 1fr);
@@ -67,45 +108,6 @@
       .books-list { max-height: 300px; overflow-y: auto; }
     }
   </style>
-</head>
-<body>
-<header class="site-header">
-  <div class="brand-stage">
-    <svg class="brand-ribbons" viewBox="0 0 1400 260" preserveAspectRatio="none" aria-hidden="true">
-      <defs><linearGradient id="ribbon-gold" x1="0" y1="0" x2=".65" y2="1"><stop stop-color="#9b580c"/><stop offset=".22" stop-color="#ffdf7a"/><stop offset=".37" stop-color="#fff5c5"/><stop offset=".55" stop-color="#c68b26"/><stop offset=".76" stop-color="#f9d579"/><stop offset="1" stop-color="#80500c"/></linearGradient><linearGradient id="ribbon-edge"><stop stop-color="#b57518"/><stop offset=".5" stop-color="#fff5c7"/><stop offset="1" stop-color="#d69b36"/></linearGradient></defs>
-      <g fill="url(#ribbon-gold)" stroke="url(#ribbon-edge)" stroke-width="1.4">
-        <path d="M0 110 Q70 218 285 260 L165 260 Q52 236 0 157Z"/>
-        <path d="M0 174 Q74 244 220 260 L100 260 Q38 243 0 210Z"/>
-        <path d="M1035 0 Q1200 16 1400 120 L1400 75 Q1240 0 1180 0Z"/>
-        <path d="M1155 0 Q1285 54 1400 59 L1400 0Z"/>
-      </g>
-    </svg>
-    <a href="/" class="brand-lockup" aria-label="Apostle Priscilla Vargas — Inicio">
-      <svg class="brand-emblem" viewBox="0 0 180 156" aria-hidden="true">
-        <defs><linearGradient id="emblem-gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff9d5"/><stop offset=".25" stop-color="#f5cf6d"/><stop offset=".48" stop-color="#a86613"/><stop offset=".72" stop-color="#ffe8a0"/><stop offset="1" stop-color="#d3982e"/></linearGradient></defs>
-        <g fill="none" stroke="url(#emblem-gold)" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke-width="5" d="M47 27L62 40L73 23L90 39L107 23L118 40L133 27L123 59Q90 48 57 59Z"/>
-          <path stroke-width="4" d="M59 65Q90 54 121 65"/>
-          <path stroke-width="5" d="M90 145Q62 112 13 124L28 69Q62 69 90 92Q118 69 152 69L167 124Q118 112 90 145Z"/>
-          <path stroke-width="3" d="M90 145Q65 130 5 138L19 87M90 145Q115 130 175 138L161 87M90 92V136"/>
-        </g><g fill="#ffe8a0"><circle cx="47" cy="26" r="4"/><circle cx="73" cy="22" r="4"/><circle cx="107" cy="22" r="4"/><circle cx="133" cy="26" r="4"/><path d="M90 5L96 15L90 25L84 15Z"/></g>
-      </svg>
-      <span class="brand-type">
-        <span class="brand-apostle">Apostle</span>
-        <span class="brand-name">Priscilla Vargas</span>
-        <span class="brand-tagline">Autora <span>|</span> Conferencista <span>|</span> Mentora</span>
-      </span>
-    </a>
-    <span class="brand-glint" aria-hidden="true"></span>
-  </div>
-  <nav class="brand-navigation" aria-label="Navegación principal"><ul>
-    <li><a href="/">Inicio</a></li>
-    <li><a href="/pages/sobre.html">Sobre Priscilla</a></li>
-    <li><a href="/pages/libros.html" aria-current="page">Libros</a></li>
-    <li><a href="/pages/eventos.html">Conferencias</a></li>
-    <li><a href="/pages/contacto.html">Contacto</a></li>
-  </ul></nav>
-</header>
 
   <section class="page-hero">
     <div class="container">
@@ -136,45 +138,9 @@
 
   
 
-  <script type="module">
-    import { db, amazonURL, coverURL } from "../js/firebase-site.js";
-    import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-    const list = document.getElementById("books-list"), detail = document.getElementById("book-detail");
-    let allBooks = [];
-    const requested = new URLSearchParams(location.search).get("book");
-    function showBook(book, item) {
-      detail.replaceChildren();
-      list.querySelectorAll(".book-item").forEach(el=>el.classList.remove("active"));
-      item.classList.add("active");
-      const cover = coverURL(book.cover);
-      if (cover) { const img = document.createElement("img"); img.src=cover; img.alt=book.title; detail.append(img); }
-      for (const [tag,value] of [["h2",book.title],["p",book.author],["p",book.description]]) {
-        if (!value) continue;
-        const el=document.createElement(tag); el.textContent=value; detail.append(el);
-      }
-      const url=amazonURL(book.amazonUrl);
-      if(url) { const a=document.createElement("a"); a.href=url; a.className="btn-primary"; a.style.marginTop="20px"; a.textContent="Comprar en Amazon"; a.target="_blank"; a.rel="noopener noreferrer"; detail.append(a); }
-    }
-    function render() {
-      const q=document.getElementById("search").value.toLowerCase();
-      const books=allBooks.filter(b=>[b.title,b.author].some(v=>String(v||"").toLowerCase().includes(q)));
-      list.replaceChildren(); detail.textContent="No hay libros disponibles.";
-      books.forEach((book,i)=>{
-        const item=document.createElement("button"); item.type="button"; item.className="book-item"; item.style.cssText="display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #eee;background-color:transparent;font:inherit;";
-        const h=document.createElement("h4"); h.textContent=book.title;
-        const p=document.createElement("p"); p.textContent=book.author||"";
-        item.append(h,p); item.onclick=()=>showBook(book,item); list.append(item);
-        if(i===0 || book.id===requested)showBook(book,item);
-      });
-    }
-    document.getElementById("search").addEventListener("input",render);
-    detail.textContent="Cargando libros…";
-    try {
-      const snap=await getDocs(query(collection(db,"books"),where("published","==",true)));
-      allBooks=snap.docs.map(d=>({...d.data(),id:d.id})).filter(b=>typeof b.title==="string" && b.title.trim());
-      render();
-    } catch(e) { console.error(e); detail.textContent="No se pudo cargar el catálogo. Intenta nuevamente."; }
-  </script>
-  <script type="module" src="/js/contact-public.js"></script>
+  
+  
+</div>
+<script type="module" src="/js/site-navigation.js"></script>
 </body>
 </html>
