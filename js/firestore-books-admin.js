@@ -28,6 +28,15 @@ export function initBooks() {
  $("book-cover").oninput = () => { pendingFile=null; fileInput.value=""; showPreview(); };
  const fields = ["title","author","description","cover","amazonUrl"];
  function reset() { selected = null; form.reset(); $("book-author").value = "Apostle Priscilla Vargas"; $("book-delete").hidden = true; pendingFile=null; showPreview(); }
+ function openEditor(title) {
+  $("book-editor-title").textContent=title;
+  form.hidden=false; list.hidden=true; $("book-new").hidden=true; $("book-import").hidden=true;
+  status.textContent=""; $("book-title").focus();
+ }
+ function closeEditor() {
+  reset(); form.hidden=true; list.hidden=false; $("book-new").hidden=false;
+  $("book-import").hidden=!!list.querySelector("button");
+ }
  function setBusy(value) { busy = value; for (const el of $("book-manager").querySelectorAll("button,input,textarea")) el.disabled = value; }
  async function refresh() {
   const snap = await getDocs(collection(db,"books"));
@@ -37,12 +46,14 @@ export function initBooks() {
    const b = d.data(), button = document.createElement("button");
    button.type = "button"; button.textContent = b.title + (b.published ? " — Publicado" : " — Borrador");
    button.addEventListener("click", () => {
-    selected = d.id;
+    if (busy) return;
+    reset(); selected = d.id;
     for (const key of fields) $("book-"+key).value = b[key] ?? "";
     $("book-published").checked = b.published === true;
     $("book-featured").checked = b.featured === true;
     $("book-delete").hidden = false;
     pendingFile=null; fileInput.value=""; showPreview();
+    openEditor("Editar libro");
    });
    list.append(button, document.createElement("br"));
   }
@@ -55,9 +66,11 @@ export function initBooks() {
   catch(e) { console.error(e); status.textContent = "No se pudo completar la operación. " + (e.message || ""); }
   finally { setBusy(false); }
  }
- $("book-new").onclick = reset;
+ $("book-new").onclick = () => { if(!busy){ reset(); openEditor("Nuevo libro"); } };
+ $("book-cancel").onclick = () => { if(!busy && confirm("¿Cerrar el editor y descartar los cambios sin guardar?")) { closeEditor(); status.textContent=""; $("book-new").focus(); } };
  form.onsubmit = e => {
   e.preventDefault();
+  if (busy || form.hidden || !confirm("¿Guardar los cambios de este libro?")) return;
   action(async () => {
    const data = Object.fromEntries(fields.map(k => [k,$("book-"+k).value.trim()]));
    if (!data.title) throw Error("El título es obligatorio.");
@@ -83,10 +96,10 @@ export function initBooks() {
      tx.set(ref,data,{merge:true});
     });
    } else await setDoc(ref,data,{merge:true});
-   reset(); await refresh();
+   closeEditor(); await refresh();
   });
  };
- $("book-delete").onclick = () => { if (selected && confirm("¿Eliminar este libro permanentemente?")) action(async()=>{ await deleteDoc(doc(db,"books",selected)); reset(); await refresh(); }); };
+ $("book-delete").onclick = () => { if (selected && confirm("¿Eliminar este libro permanentemente?")) action(async()=>{ await deleteDoc(doc(db,"books",selected)); closeEditor(); await refresh(); }); };
  $("book-import").onclick = () => action(async()=>{
   const response = await fetch("/data/books.json");
   if (!response.ok) throw Error("No se pudo leer el catálogo anterior.");
@@ -97,6 +110,6 @@ export function initBooks() {
   }
   await refresh();
  });
- reset();
+ closeEditor();
  return action(refresh);
 }
