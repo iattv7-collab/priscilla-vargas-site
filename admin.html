@@ -57,6 +57,7 @@
             margin-bottom: 4px;
             font-size: 0.9rem;
         }
+     #book-form input:not([type=checkbox]), #book-form textarea, #login-form input { display:block; width:100%; max-width:100%; box-sizing:border-box; padding:10px; border:1px solid #d9c9ad; border-radius:6px; margin-bottom:12px; font:inherit; } #book-manager { border-top:1px solid #eadfce; margin-top:20px; padding-top:12px; } [hidden] { display:none !important; }
     </style>
 </head>
 
@@ -75,28 +76,24 @@
         </section>
         <section class="section" id="admin-panel" hidden>
             <h2>Acceso autorizado</h2>
-            <p>La conexión con Firebase está activa. Los editores de contenido se habilitarán en la siguiente etapa.</p>
+            <p>La conexión con Firebase está activa.</p>
             <button type="button" id="logout-button">Cerrar sesión</button>
+            <div id="book-manager"><h2>Libros</h2><button type="button" id="book-import" hidden>Importar libro existente</button><div id="book-list"></div><button type="button" id="book-new">+ Nuevo libro</button><form id="book-form"><label for="book-title">Título</label><input id="book-title" required><label for="book-author">Autor</label><input id="book-author"><label for="book-description">Descripción</label><textarea id="book-description" rows="5"></textarea><label for="book-cover">Portada (URL HTTPS o ruta existente)</label><input id="book-cover"><label for="book-price">Precio USD (opcional)</label><input id="book-price" type="number" min="0" step="0.01"><label for="book-amazonUrl">Enlace de Amazon</label><input id="book-amazonUrl" type="url"><label><input id="book-published" type="checkbox"> Publicado</label><button type="submit">Guardar libro</button> <button type="button" id="book-delete" hidden>Eliminar libro</button></form><p id="book-status" role="status"></p></div>
         </section>
         <p id="auth-status" role="status">Conectando con Firebase…</p>
     </div>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+        import { app, db } from "./js/firebase-site.js";
+        import { initBooks } from "./js/firestore-books-admin.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-        const app = initializeApp({
-            apiKey: "AIzaSyBT9XQP1W_agcc6YyVdwSIRwpIKI4oyqaI",
-            authDomain: "priscilla-vargas.firebaseapp.com",
-            projectId: "priscilla-vargas",
-            storageBucket: "priscilla-vargas.firebasestorage.app",
-            messagingSenderId: "332544919827",
-            appId: "1:332544919827:web:caf0403849b334b39ff2e6"
-        });
-        const auth = getAuth(app), db = getFirestore(app);
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+        const auth = getAuth(app);
         const $ = id => document.getElementById(id);
         const status = $("auth-status");
         onAuthStateChanged(auth, async user => {
             $("admin-panel").hidden = true;
+            $("book-list").replaceChildren();
+            $("book-form").reset();
             $("login-panel").hidden = !!user;
             $("login-button").disabled = true;
             if (!user) {
@@ -110,6 +107,7 @@
                 if (!admin.exists() || admin.data().role !== "admin") throw new Error("No autorizado");
                 if (auth.currentUser?.uid !== user.uid) return;
                 $("admin-panel").hidden = false;
+                initBooks();
                 status.textContent = "Sesión iniciada: " + user.email;
             } catch {
                 await signOut(auth);
