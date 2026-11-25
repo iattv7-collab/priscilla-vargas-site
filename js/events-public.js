@@ -1,9 +1,10 @@
 import {db,coverURL} from "./firebase-site.js";
 import {youtubeId} from "./testimonial-video.js";
 import {collection,query,where,getDocs} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+export async function initEvents(root){
 const today=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
 const dateKey=["year","month","day"].map(k=>today.find(p=>p.type===k).value).join("-");
-const upcoming=document.getElementById("upcoming-events"),past=document.getElementById("past-events");
+const upcoming=root.querySelector("#upcoming-events"),past=root.querySelector("#past-events");
 function card(t){
  const article=document.createElement("article");article.className="conference-card";
  const append=(tag,value)=>{if(!value)return;const el=document.createElement(tag);el.textContent=value;article.append(el);};
@@ -21,3 +22,5 @@ try{
  const previous=entries.filter(t=>!t.date||t.date<dateKey).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
  for(const [section,items] of [[upcoming,next],[past,previous]]){const grid=section.querySelector(".conference-grid");for(const t of items)grid.append(card(t));section.hidden=!items.length;}
 }catch(e){console.error("No se pudieron cargar las conferencias",e);}
+
+}
