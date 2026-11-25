@@ -355,3 +355,12 @@ footer {
 .featured-book h2 { color:var(--royal-blue); margin:10px 0; line-height:1.25; }
 .featured-book p { margin-bottom:18px; }
 @media(max-width:700px) { .author-intro,.featured-book { grid-template-columns:1fr; text-align:center; } .author-intro img { max-width:320px; margin:auto; } .featured-book img { margin:auto; } }
+
+/* Distinct book collection on the author-first homepage */
+.home-books { background:linear-gradient(180deg,#f5e8ce,#fffaf0); border-top:2px solid #d6a444; border-bottom:1px solid #e5c57d; padding:clamp(20px,3vw,36px) 20px; }
+.home-books-heading { display:flex; align-items:center; justify-content:center; gap:clamp(12px,3vw,32px); max-width:1140px; margin:0 auto 22px; color:var(--royal-blue); font-family:'Playfair Display',Georgia,serif; font-size:clamp(1.5rem,2.7vw,2.2rem); line-height:1.2; text-align:center; }
+.home-books-heading::before,.home-books-heading::after { content:''; height:1px; flex:1; background:linear-gradient(90deg,transparent,#c9a227); }
+.home-books-heading::after { background:linear-gradient(90deg,#c9a227,transparent); }
+.home-books .featured-book { margin-bottom:0; }
+.home-books .book-section { margin:24px auto 0; }
+@media(max-width:700px){.home-books { padding:20px 12px; }.home-books-heading { margin-bottom:16px; }}
