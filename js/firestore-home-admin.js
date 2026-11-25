@@ -1,3 +1,4 @@
+import { closeWorkspace } from "./admin-workspace.js";
 import { app, db, coverURL } from "./firebase-site.js";
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
@@ -81,6 +82,7 @@ export async function initHomepage() {
 }
 export function resetHomepage() {
  generation++;
+ closeWorkspace("home");
  const form=document.getElementById("home-form");
  form.reset();form.hidden=true;document.getElementById("home-edit").hidden=false;document.getElementById("home-edit").setAttribute("aria-expanded","false");const preview=document.getElementById("home-preview");if(preview.src.startsWith("blob:"))URL.revokeObjectURL(preview.src);
  preview.hidden=true;preview.removeAttribute("src");document.getElementById("home-status").textContent="";
