@@ -4,7 +4,7 @@ export function initBooks() {
  const $ = id => document.getElementById(id);
  const form = $("book-form"), list = $("book-list"), status = $("book-status");
  let selected = null, busy = false;
- const fields = ["title","author","description","cover","price","amazonUrl"];
+ const fields = ["title","author","description","cover","amazonUrl"];
  function reset() { selected = null; form.reset(); $("book-author").value = "Apostle Priscilla Vargas"; $("book-delete").hidden = true; }
  function setBusy(value) { busy = value; for (const el of $("book-manager").querySelectorAll("button,input,textarea")) el.disabled = value; }
  async function refresh() {
@@ -39,8 +39,6 @@ export function initBooks() {
    if (!data.title) throw Error("El título es obligatorio.");
    if (data.cover && !coverURL(data.cover)) throw Error("URL de portada no válida.");
    if (data.amazonUrl && !amazonURL(data.amazonUrl)) throw Error("Utiliza un enlace HTTPS de Amazon.com.");
-   if (data.price !== "" && (!Number.isFinite(Number(data.price)) || Number(data.price)<0)) throw Error("Precio no válido.");
-   data.price = data.price === "" ? null : Number(data.price);
    data.published = $("book-published").checked;
    await setDoc(selected ? doc(db,"books",selected) : doc(collection(db,"books")),data,{merge:true});
    reset(); await refresh();
@@ -53,7 +51,7 @@ export function initBooks() {
   const entries = (await response.json()).filter(b => typeof b.title === "string" && b.title.trim());
   for (const b of entries) {
    const ref = doc(db,"books","legacy-"+b.id);
-   await runTransaction(db,async tx=>{ if (!(await tx.get(ref)).exists()) tx.set(ref,{title:b.title,author:b.author||"",description:b.description||"",cover:b.cover||"",published:b.published===true,price:null,amazonUrl:""}); });
+   await runTransaction(db,async tx=>{ if (!(await tx.get(ref)).exists()) tx.set(ref,{title:b.title,author:b.author||"",description:b.description||"",cover:b.cover||"",published:b.published===true,amazonUrl:""}); });
   }
   await refresh();
  });
