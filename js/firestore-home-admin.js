@@ -22,9 +22,12 @@ let generation=0;
 export async function initHomepage() {
  const version=++generation, uid=auth.currentUser?.uid;
  const $=id=>document.getElementById(id), form=$("home-form"), status=$("home-status"), preview=$("home-preview"), picker=$("home-file"), drop=$("home-drop");
- const active=()=>generation===version && auth.currentUser?.uid===uid;
+ const active=()=>generation===version && !!uid && auth.currentUser?.uid===uid;
+ let baseline=null;
  let pending=null, objectURL=null, busy=false;
  function setBusy(value) { busy=value; for(const el of form.querySelectorAll("input,textarea,button")) el.disabled=value; }
+ function hasChanges() { return !!pending || (baseline && fields.some(k=>$("home-"+k).value!==baseline[k])); }
+ $("home-cancel").onclick=()=>{ if(busy||!active())return; if(hasChanges()&&!confirm("¿Descartar los cambios sin guardar?"))return; resetHomepage(); $("home-edit").focus(); };
  function renderPreview() {
   if(objectURL) URL.revokeObjectURL(objectURL);
   objectURL=pending?URL.createObjectURL(pending):null;
@@ -45,6 +48,7 @@ export async function initHomepage() {
  $("home-photo").oninput=()=>{pending=null;picker.value="";renderPreview();};
  form.onsubmit=async e=>{
   e.preventDefault();if(busy||!active())return;
+  if(!confirm("¿Seguro que deseas publicar estos cambios en la página de inicio?"))return;
   setBusy(true);status.textContent="Guardando…";
   try {
    const data=Object.fromEntries(fields.map(k=>[k,$("home-"+k).value.trim()]));
@@ -61,7 +65,7 @@ export async function initHomepage() {
    }
    if(!active())return;
    await setDoc(contentRef,{...data,published:true},{merge:true});
-   if(active())status.textContent="Inicio guardado y publicado correctamente.";
+   if(active()){ resetHomepage(); $("home-status").textContent="Inicio guardado y publicado correctamente."; $("home-edit").focus(); }
   }catch(e){console.error(e);if(active())status.textContent="No se pudo guardar: "+e.message;}
   finally{if(active())setBusy(false);}
  };
@@ -70,13 +74,14 @@ export async function initHomepage() {
   const snap=await getDoc(contentRef);if(!active())return;
   const data={...defaults,...(snap.exists()?snap.data():{})};
   for(const k of fields)$("home-"+k).value=typeof data[k]==="string"?data[k]:defaults[k];
+  baseline=Object.fromEntries(fields.map(k=>[k,$("home-"+k).value]));
   renderPreview();status.textContent=snap.exists()?"Contenido cargado.":"Contenido actual listo para editar.";
   setBusy(false);
- }catch(e){console.error(e);if(active())status.textContent="No se pudo cargar. Recarga la página para intentar nuevamente.";}
+ }catch(e){console.error(e);if(active()){ resetHomepage(); status.textContent="No se pudo cargar. Intenta abrir el editor nuevamente."; }}
 }
 export function resetHomepage() {
  generation++;
  const form=document.getElementById("home-form");
- form.reset();const preview=document.getElementById("home-preview");if(preview.src.startsWith("blob:"))URL.revokeObjectURL(preview.src);
+ form.reset();form.hidden=true;document.getElementById("home-edit").hidden=false;document.getElementById("home-edit").setAttribute("aria-expanded","false");const preview=document.getElementById("home-preview");if(preview.src.startsWith("blob:"))URL.revokeObjectURL(preview.src);
  preview.hidden=true;preview.removeAttribute("src");document.getElementById("home-status").textContent="";
 }
