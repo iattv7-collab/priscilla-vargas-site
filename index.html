@@ -124,32 +124,7 @@
 
 
 
-  <script>
-    async function loadTestimonials() {
-      try {
-        const res = await fetch("/data/testimonials.json");
-        const items = await res.json();
-        const grid = document.querySelector('.testimonial-grid');
-        if (!grid || !Array.isArray(items) || !items.length) return;
-        for (const t of items) {
-          if (!t.quote || !t.author) continue;
-          const card = document.createElement('article');
-          card.className = 'testimonial';
-          const quote = document.createElement('p');
-          quote.className = 'quote';
-          quote.textContent = t.quote;
-          const author = document.createElement('p');
-          author.className = 'author-name';
-          author.textContent = t.author;
-          card.append(quote, author);
-          grid.append(card);
-        }
-        if (grid.childElementCount) grid.closest('section').hidden = false;
-      } catch (e) { console.log('Could not load testimonials'); }
-    }
-
-    loadTestimonials();
-  </script>
+  <script type="module" src="/js/testimonials-public.js"></script>
   <script type="module">
     import { db, coverURL } from "./js/firebase-site.js";
     import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
