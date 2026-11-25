@@ -11,13 +11,13 @@
 <body>
   <section class="page-hero">
     <div class="container">
-      <h1>Contacto</h1>
-      <p>Estamos aquí para servirte</p>
+      <h1 data-contact-text="heading">Contacto</h1>
+      <p data-contact-text="subtitle">Estamos aquí para servirte</p>
     </div>
   </section>
 
   <section class="page-content container">
-    <form action="#" method="post" style="background: white; padding: 30px; border-radius: 12px;">
+    <form id="contact-message-form" style="background: white; padding: 30px; border-radius: 12px;">
       <div class="form-group">
         <label for="nombre">Nombre</label>
         <input type="text" id="nombre" name="nombre" required>
@@ -39,11 +39,11 @@
         <label for="mensaje">Mensaje</label>
         <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
       </div>
-      <button type="submit" class="btn-primary">Enviar Mensaje</button>
+      <button type="submit" class="btn-primary" disabled>Abrir correo para enviar</button><p>El formulario abre tu aplicación de correo electrónico; debes enviar el mensaje desde allí.</p><p id="contact-message-status" role="status"></p>
     </form>
     <div style="margin-top: 40px; text-align: center;">
-      <p>✉️ contacto@priscillavargas.com</p>
-      <p>Síguenos en redes sociales para más contenido inspirador.</p>
+      <p>✉️ <a data-contact-email href="mailto:contacto@priscillavargas.com">contacto@priscillavargas.com</a></p>
+      <p data-contact-text="socialText">Síguenos en redes sociales para más contenido inspirador.</p><div data-social-links hidden></div>
     </div>
   </section>
 
@@ -52,8 +52,10 @@
       <div class="footer-logo">👑 Apostle Priscilla Vargas</div>
       <div>🌐 www.priscillavargas.com</div>
     </div>
+    <div data-social-links hidden style="text-align:center;padding:0 15px 15px"></div>
   </footer>
 
   <script type="module" src="/js/site-header.js"></script>
+  <script type="module" src="/js/contact-public.js"></script>
 </body>
 </html>
