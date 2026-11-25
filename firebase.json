@@ -4,7 +4,62 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "server.js",
+      "data/**",
+      "partials/**",
+      "js/admin-books.js",
+      "js/admin-hero.js",
+      "js/admin-testimonials.js",
+      "js/admin-videos.js",
+      "**/*.rules",
+      "**/*.md",
+      "**/*.log",
+      "**/*.zip",
+      "**/*.pdf",
+      "**/*.env",
+      "package*.json",
+      "scripts/**",
+      "tests/**"
+    ],
+    "headers": [
+      {
+        "source": "/admin.html",
+        "headers": [
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          }
+        ]
+      },
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "SAMEORIGIN"
+          }
+        ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/pages/comprar.html",
+        "destination": "/pages/libros.html",
+        "type": 301
+      }
     ]
   }
 }
