@@ -18,6 +18,7 @@ export function initBooks() {
     selected = d.id;
     for (const key of fields) $("book-"+key).value = b[key] ?? "";
     $("book-published").checked = b.published === true;
+    $("book-featured").checked = b.featured === true;
     $("book-delete").hidden = false;
    });
    list.append(button, document.createElement("br"));
@@ -40,7 +41,16 @@ export function initBooks() {
    if (data.cover && !coverURL(data.cover)) throw Error("URL de portada no válida.");
    if (data.amazonUrl && !amazonURL(data.amazonUrl)) throw Error("Utiliza un enlace HTTPS de Amazon.com.");
    data.published = $("book-published").checked;
-   await setDoc(selected ? doc(db,"books",selected) : doc(collection(db,"books")),data,{merge:true});
+   data.featured = $("book-featured").checked;
+   if (data.featured && !data.published) throw Error("Publica el libro para destacarlo.");
+   const ref = selected ? doc(db,"books",selected) : doc(collection(db,"books"));
+   if (data.featured) {
+    const all = await getDocs(collection(db,"books"));
+    await runTransaction(db, async tx => {
+     for (const d of all.docs) if (d.id !== ref.id && d.data().featured === true) tx.update(d.ref,{featured:false});
+     tx.set(ref,data,{merge:true});
+    });
+   } else await setDoc(ref,data,{merge:true});
    reset(); await refresh();
   });
  };
