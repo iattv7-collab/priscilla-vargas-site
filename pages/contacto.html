@@ -19,6 +19,44 @@
   <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
+<header class="site-header">
+  <div class="brand-stage">
+    <svg class="brand-ribbons" viewBox="0 0 1400 260" preserveAspectRatio="none" aria-hidden="true">
+      <defs><linearGradient id="ribbon-gold" x1="0" y1="0" x2=".65" y2="1"><stop stop-color="#9b580c"/><stop offset=".22" stop-color="#ffdf7a"/><stop offset=".37" stop-color="#fff5c5"/><stop offset=".55" stop-color="#c68b26"/><stop offset=".76" stop-color="#f9d579"/><stop offset="1" stop-color="#80500c"/></linearGradient><linearGradient id="ribbon-edge"><stop stop-color="#b57518"/><stop offset=".5" stop-color="#fff5c7"/><stop offset="1" stop-color="#d69b36"/></linearGradient></defs>
+      <g fill="url(#ribbon-gold)" stroke="url(#ribbon-edge)" stroke-width="1.4">
+        <path d="M0 110 Q70 218 285 260 L165 260 Q52 236 0 157Z"/>
+        <path d="M0 174 Q74 244 220 260 L100 260 Q38 243 0 210Z"/>
+        <path d="M1035 0 Q1200 16 1400 120 L1400 75 Q1240 0 1180 0Z"/>
+        <path d="M1155 0 Q1285 54 1400 59 L1400 0Z"/>
+      </g>
+    </svg>
+    <a href="/" class="brand-lockup" aria-label="Apostle Priscilla Vargas — Inicio">
+      <svg class="brand-emblem" viewBox="0 0 180 156" aria-hidden="true">
+        <defs><linearGradient id="emblem-gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff9d5"/><stop offset=".25" stop-color="#f5cf6d"/><stop offset=".48" stop-color="#a86613"/><stop offset=".72" stop-color="#ffe8a0"/><stop offset="1" stop-color="#d3982e"/></linearGradient></defs>
+        <g fill="none" stroke="url(#emblem-gold)" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke-width="5" d="M47 27L62 40L73 23L90 39L107 23L118 40L133 27L123 59Q90 48 57 59Z"/>
+          <path stroke-width="4" d="M59 65Q90 54 121 65"/>
+          <path stroke-width="5" d="M90 145Q62 112 13 124L28 69Q62 69 90 92Q118 69 152 69L167 124Q118 112 90 145Z"/>
+          <path stroke-width="3" d="M90 145Q65 130 5 138L19 87M90 145Q115 130 175 138L161 87M90 92V136"/>
+        </g><g fill="#ffe8a0"><circle cx="47" cy="26" r="4"/><circle cx="73" cy="22" r="4"/><circle cx="107" cy="22" r="4"/><circle cx="133" cy="26" r="4"/><path d="M90 5L96 15L90 25L84 15Z"/></g>
+      </svg>
+      <span class="brand-type">
+        <span class="brand-apostle">Apostle</span>
+        <span class="brand-name">Priscilla Vargas</span>
+        <span class="brand-tagline">Autora <span>|</span> Conferencista <span>|</span> Mentora</span>
+      </span>
+    </a>
+    <span class="brand-glint" aria-hidden="true"></span>
+  </div>
+  <nav class="brand-navigation" aria-label="Navegación principal"><ul>
+    <li><a href="/">Inicio</a></li>
+    <li><a href="/pages/sobre.html">Sobre Priscilla</a></li>
+    <li><a href="/pages/libros.html">Libros</a></li>
+    <li><a href="/pages/eventos.html">Conferencias</a></li>
+    <li><a href="/pages/contacto.html" aria-current="page">Contacto</a></li>
+  </ul></nav>
+</header>
+
   <section class="page-hero">
     <div class="container">
       <h1 data-contact-text="heading">Contacto</h1>
@@ -65,7 +103,7 @@
     <div data-social-links hidden style="text-align:center;padding:0 15px 15px"></div>
   </footer>
 
-  <script type="module" src="/js/site-header.js"></script>
+  
   <script type="module" src="/js/contact-public.js"></script>
 </body>
 </html>
