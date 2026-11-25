@@ -50,8 +50,11 @@ body {
  .site-header .brand-name { font-size:clamp(1.6rem,7.6vw,3rem); padding-top:.24em; }
  .site-header .brand-tagline { font-size:clamp(.46rem,1.55vw,.65rem); letter-spacing:.08em; }
  .site-header .brand-tagline span { padding:0 .15em; }
- .site-header .brand-navigation ul { gap:0 5px; padding:5px; }
- .site-header .brand-navigation a { padding:5px 9px; font-size:.8rem; }
+ .site-header .brand-navigation { overflow-x:auto; scrollbar-width:none; }
+ .site-header .brand-navigation::-webkit-scrollbar { display:none; }
+ .site-header .brand-navigation ul { flex-wrap:nowrap; gap:0; padding:3px 4px; width:max-content; min-width:100%; }
+ .site-header .brand-navigation li { flex:0 0 auto; }
+ .site-header .brand-navigation a { padding:5px clamp(5px,1.5vw,9px); font-size:.8rem; white-space:nowrap; }
 }
 .btn-primary {
   background: linear-gradient(180deg,#fff0ad 0%,#eac052 16%,#c18a1d 48%,#9c600a 54%,#c38a19 100%);
