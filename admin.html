@@ -58,6 +58,8 @@
             font-size: 0.9rem;
         }
      #book-form input:not([type=checkbox]), #book-form textarea, #home-form input, #home-form textarea, #login-form input { display:block; width:100%; max-width:100%; box-sizing:border-box; padding:10px; border:1px solid #d9c9ad; border-radius:6px; margin-bottom:12px; font:inherit; } #book-manager { border-top:1px solid #eadfce; margin-top:20px; padding-top:12px; } [hidden] { display:none !important; }
+    #workspace-back { position:sticky; top:12px; z-index:5; background:#17468c; color:white; margin:0 0 12px; box-shadow:0 2px 8px #0002; font-weight:bold; } #workspace-back:hover { background:#10356c; }
+    #workspace-back:disabled { opacity:.5; cursor:wait; }
     </style>
 </head>
 
@@ -75,6 +77,7 @@
             </form>
         </section>
         <section class="section" id="admin-panel" hidden>
+            <button type="button" id="workspace-back" hidden>← Volver al panel</button>
             <h2 data-dashboard-only>Acceso autorizado</h2>
             <p data-dashboard-only>La conexión con Firebase está activa.</p>
             <button type="button" id="logout-button" data-dashboard-only>Cerrar sesión</button>
