@@ -18,7 +18,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://priscillavargas.com/#priscilla-vargas","name":"Priscilla Vargas","alternateName":"Apostle Priscilla Vargas","url":"https://priscillavargas.com/","image":"https://priscillavargas.com/images/author-hires.jpg","jobTitle":["Autora","Conferencista","Mentora"],"knowsAbout":["Literatura cristiana","Gratitud","Fe cristiana"]}</script>
   <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <style>main [hidden] { display:none !important; }</style>
+  
 </head>
 <body>
 <header class="site-header">
@@ -58,6 +58,8 @@
     <li><a href="/pages/contacto.html">Contacto</a></li>
   </ul></nav>
 </header>
+<div id="site-content" data-page="home">
+<style>main [hidden] { display:none !important; }</style>
   <main>
     <section class="author-intro container">
       <img src="images/author-hires.jpg" alt="Apostle Priscilla Vargas" width="340" height="480">
@@ -134,59 +136,11 @@
 
 
 
-  <script type="module" src="/js/testimonials-public.js"></script>
-  <script type="module">
-    import { db, coverURL } from "./js/firebase-site.js";
-    import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-    const section = document.querySelector(".featured-book");
-    try {
-      const snapshot = await getDocs(query(collection(db,"books"),where("published","==",true)));
-      const books = snapshot.docs.filter(d=>typeof d.data().title==="string" && d.data().title.trim());
-      const chosen = books.find(d=>d.data().featured===true) || books[0];
-      if(chosen) {
-        const book=chosen.data(), img=section.querySelector("img");
-        const cover=coverURL(book.cover);
-        if(cover) { img.src=cover; img.alt="Portada de "+book.title; } else { img.removeAttribute("src"); img.hidden=true; }
-        section.querySelector("h2").textContent=book.title;
-        section.querySelector("div > p:not(.author-kicker)").textContent=book.description||"";
-        section.querySelector("a").href="/pages/libros.html?book="+encodeURIComponent(chosen.id);
-        section.hidden=false;
-        document.getElementById("legacy-book-benefits").hidden=chosen.id!=="legacy-1";
-        document.getElementById("legacy-book-benefits").querySelector("h2").textContent=book.title;
-      }
-    } catch(e) { console.error("No se pudo cargar el libro destacado",e); }
-  </script>
-  <script type="module">
-    import { db, coverURL } from "./js/firebase-site.js";
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
-    try {
-      const snapshot = await getDoc(doc(db,"content","homepage"));
-      if (snapshot.exists() && snapshot.data().published === true) {
-        const data = snapshot.data();
-        const selectors = {
-          kicker:".author-intro .author-kicker",
-          title:".author-intro h1",
-          introduction:".author-intro div > p:not(.author-kicker)",
-          button:".author-intro a",
-          featuredLabel:".featured-book .author-kicker",
-          featuredButton:".featured-book a",
-          eventTitle:".events-cta h2",
-          eventText:".events-cta p",
-          eventButton:".events-cta a"
-        };
-        for (const [key,selector] of Object.entries(selectors)) {
-          const el=document.querySelector(selector);
-          if(el && typeof data[key]==="string" && data[key].trim()) el.textContent=(key==="eventButton"?"📅 ":"")+data[key];
-        }
-        const photo=coverURL(data.photo);
-        if(photo) {
-          const img=document.querySelector(".author-intro img");
-          img.src=photo;
-          if(typeof data.title==="string" && data.title.trim()) img.alt=data.title;
-        }
-      }
-    } catch(e) { console.info("Se muestra el contenido original de inicio."); }
-  </script>
-  <script type="module" src="/js/contact-public.js"></script>
+  
+  
+  
+  
+</div>
+<script type="module" src="/js/site-navigation.js"></script>
 </body>
 </html>
