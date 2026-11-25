@@ -2,7 +2,7 @@ import {app,db} from "./firebase-site.js";
 import {youtubeId} from "./testimonial-video.js";
 import {openWorkspace,closeWorkspace} from "./admin-workspace.js";
 import {getAuth} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
-import {collection,doc,getDocs,setDoc,deleteDoc,runTransaction} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+import {collection,doc,getDocs,setDoc,deleteDoc} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 const auth=getAuth(app),col=collection(db,"testimonials"),$=id=>document.getElementById(id);
 let generation=0;
 export function resetTestimonials(){
@@ -25,7 +25,7 @@ export function initTestimonials(){
  function close(){selected=null;baseline=null;form.reset();form.hidden=true;$("test-actions").hidden=false;closeWorkspace("test");$("test-new").focus();}
  async function refresh(){
   const snap=await getDocs(col);if(!active())return;
-  list.replaceChildren();$("test-import").hidden=!snap.empty;
+  list.replaceChildren();$("test-import").hidden=true;
   for(const d of snap.docs){
    const t=d.data(),button=document.createElement("button");button.type="button";button.textContent=(t.author||"Sin nombre")+" — "+(t.published?"Publicado":"Borrador");button.onclick=()=>open(d.id,t);list.append(button,document.createElement("br"));
   }
@@ -49,11 +49,6 @@ export function initTestimonials(){
   action(async()=>{await setDoc(target,data,{merge:true});if(!active())return;close();await refresh();},"Testimonio guardado.");
  };
  $("test-delete").onclick=()=>{if(!selected||busy||!active()||!confirm("¿Eliminar permanentemente este testimonio?"))return;const target=doc(col,selected);action(async()=>{await deleteDoc(target);if(!active())return;close();await refresh();},"Testimonio eliminado.");};
- $("test-import").onclick=()=>{if(!confirm("¿Importar los testimonios anteriores como borradores para revisarlos?"))return;action(async()=>{
-  const response=await fetch("/data/testimonials.json");if(!response.ok)throw Error("No se pudo leer el archivo anterior.");
-  const items=await response.json();if(!Array.isArray(items))throw Error("Archivo no válido.");
-  for(const t of items){if(!active())return;if(!t.author||(!t.quote&&!youtubeId(t.video)))continue;const target=doc(col,"legacy-"+t.id);await runTransaction(db,async tx=>{if(!(await tx.get(target)).exists())tx.set(target,{author:t.author.trim(),quote:t.quote||"",video:youtubeId(t.video)?t.video:"",published:false});});}
-  await refresh();
- },"Testimonios importados como borradores.");};
+
  action(refresh,"");
 }
