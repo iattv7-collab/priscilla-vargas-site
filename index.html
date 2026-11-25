@@ -171,5 +171,36 @@
       }
     } catch(e) { console.error("No se pudo cargar el libro destacado",e); }
   </script>
+  <script type="module">
+    import { db, coverURL } from "./js/firebase-site.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+    try {
+      const snapshot = await getDoc(doc(db,"content","homepage"));
+      if (snapshot.exists() && snapshot.data().published === true) {
+        const data = snapshot.data();
+        const selectors = {
+          kicker:".author-intro .author-kicker",
+          title:".author-intro h1",
+          introduction:".author-intro div > p:not(.author-kicker)",
+          button:".author-intro a",
+          featuredLabel:".featured-book .author-kicker",
+          featuredButton:".featured-book a",
+          eventTitle:".events-cta h2",
+          eventText:".events-cta p",
+          eventButton:".events-cta a"
+        };
+        for (const [key,selector] of Object.entries(selectors)) {
+          const el=document.querySelector(selector);
+          if(el && typeof data[key]==="string" && data[key].trim()) el.textContent=(key==="eventButton"?"📅 ":"")+data[key];
+        }
+        const photo=coverURL(data.photo);
+        if(photo) {
+          const img=document.querySelector(".author-intro img");
+          img.src=photo;
+          if(typeof data.title==="string" && data.title.trim()) img.alt=data.title;
+        }
+      }
+    } catch(e) { console.info("Se muestra el contenido original de inicio."); }
+  </script>
 </body>
 </html>
