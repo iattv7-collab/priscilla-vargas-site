@@ -1,3 +1,4 @@
+import { openWorkspace, closeWorkspace } from "./admin-workspace.js";
 import { app, db, amazonURL, coverURL } from "./firebase-site.js";
 import { collection, doc, getDocs, setDoc, deleteDoc, runTransaction } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-storage.js";
@@ -29,11 +30,13 @@ export function initBooks() {
  const fields = ["title","author","description","cover","amazonUrl"];
  function reset() { selected = null; form.reset(); $("book-author").value = "Apostle Priscilla Vargas"; $("book-delete").hidden = true; pendingFile=null; showPreview(); }
  function openEditor(title) {
+  if(!openWorkspace("books")) return;
   $("book-editor-title").textContent=title;
   form.hidden=false; list.hidden=true; $("book-new").hidden=true; $("book-import").hidden=true;
   status.textContent=""; $("book-title").focus();
  }
  function closeEditor() {
+  closeWorkspace("books");
   reset(); form.hidden=true; list.hidden=false; $("book-new").hidden=false;
   $("book-import").hidden=!!list.querySelector("button");
  }
