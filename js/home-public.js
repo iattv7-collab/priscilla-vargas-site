@@ -16,6 +16,7 @@ await Promise.all([
         section.querySelector("div > p:not(.author-kicker)").textContent=book.description||"";
         section.querySelector("a").href="/pages/libros.html?book="+encodeURIComponent(chosen.id);
         section.hidden=false;
+        root.querySelector(".home-books").hidden=false;
         root.querySelector("#legacy-book-benefits").hidden=chosen.id!=="legacy-1";
         root.querySelector("#legacy-book-benefits").querySelector("h2").textContent=book.title;
       }
