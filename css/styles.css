@@ -27,7 +27,7 @@ body {
 .site-header .brand-lockup { display:flex; align-items:center; justify-content:center; gap:clamp(12px,2.4vw,36px); width:min(100%,1200px); text-decoration:none; color:#885009; }
 .site-header .brand-emblem { flex:0 0 auto; width:clamp(55px,9vw,120px); height:auto; filter:drop-shadow(0 2px 4px #925b2540); }
 .site-header .brand-type { position:relative; display:flex; flex-direction:column; align-items:center; border-left:2px solid var(--royal-blue); padding-left:clamp(12px,2.4vw,36px); min-width:0; }
-.site-header .brand-apostle { position:absolute; top:0; left:calc(clamp(12px,2.4vw,36px) + 26%); transform:translateX(-50%); z-index:1; font-family:'Playfair Display',Georgia,serif; font-style:normal; font-size:clamp(1rem,1.9vw,2rem); line-height:1.05; color:var(--royal-blue); }
+.site-header .brand-apostle { position:absolute; top:0; left:calc(clamp(12px,2.4vw,36px) + 30%); transform:translateX(-50%); z-index:1; font-family:'Playfair Display',Georgia,serif; font-style:normal; font-size:clamp(1rem,1.9vw,2rem); line-height:1.05; color:var(--royal-blue); }
 .site-header .brand-name { font-family:'Ephesis',cursive; font-weight:400; font-size:clamp(2rem,5.7vw,5.7rem); letter-spacing:0; line-height:1.05; padding:.12em .08em .02em; color:#92600d; white-space:nowrap; }
 @supports (background-clip:text) or (-webkit-background-clip:text) {
  .site-header .brand-apostle { background:linear-gradient(180deg,#123577 5%,#2459ab 28%,#568bd2 43%,#204c99 52%,#123577 85%); -webkit-background-clip:text; background-clip:text; color:transparent; }
@@ -46,7 +46,7 @@ body {
  .site-header .brand-lockup { gap:9px; }
  .site-header .brand-emblem { width:clamp(42px,15vw,80px); }
  .site-header .brand-type { padding-left:9px; border-width:1px; }
- .site-header .brand-apostle { left:calc(9px + 26%); }
+ .site-header .brand-apostle { left:calc(9px + 30%); }
  .site-header .brand-name { font-size:clamp(1.6rem,7.6vw,3rem); padding-top:.24em; }
  .site-header .brand-tagline { font-size:clamp(.46rem,1.55vw,.65rem); letter-spacing:.08em; }
  .site-header .brand-tagline span { padding:0 .15em; }
