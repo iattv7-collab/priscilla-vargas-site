@@ -91,6 +91,7 @@
     import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
     const list = document.getElementById("books-list"), detail = document.getElementById("book-detail");
     let allBooks = [];
+    const requested = new URLSearchParams(location.search).get("book");
     function showBook(book, item) {
       detail.replaceChildren();
       list.querySelectorAll(".book-item").forEach(el=>el.classList.remove("active"));
@@ -113,14 +114,14 @@
         const h=document.createElement("h4"); h.textContent=book.title;
         const p=document.createElement("p"); p.textContent=book.author||"";
         item.append(h,p); item.onclick=()=>showBook(book,item); list.append(item);
-        if(i===0)showBook(book,item);
+        if(i===0 || book.id===requested)showBook(book,item);
       });
     }
     document.getElementById("search").addEventListener("input",render);
     detail.textContent="Cargando libros…";
     try {
       const snap=await getDocs(query(collection(db,"books"),where("published","==",true)));
-      allBooks=snap.docs.map(d=>d.data()).filter(b=>typeof b.title==="string" && b.title.trim());
+      allBooks=snap.docs.map(d=>({...d.data(),id:d.id})).filter(b=>typeof b.title==="string" && b.title.trim());
       render();
     } catch(e) { console.error(e); detail.textContent="No se pudo cargar el catálogo. Intenta nuevamente."; }
   </script>
