@@ -9,6 +9,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Priscilla Vargas","alternateName":"Apostle Priscilla Vargas","jobTitle":"Autora y conferencista","knowsAbout":["Literatura cristiana","Gratitud","Fe cristiana"]}</script>
   <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>main [hidden] { display:none !important; }</style>
 </head>
 <body>
 <header class="site-header">
@@ -58,7 +59,7 @@
         <a class="btn-primary" href="pages/sobre.html">Conoce a Priscilla</a>
       </div>
     </section>
-    <section class="featured-book container" aria-labelledby="featured-title">
+    <section class="featured-book container" aria-labelledby="featured-title" hidden>
       <img src="images/file_00000000beb88230bac115597cff0d32.png" alt="Portada de La Llave del Reino: El Poder de la Gratitud" loading="lazy">
       <div>
         <p class="author-kicker">Libro destacado</p>
@@ -68,7 +69,7 @@
       </div>
     </section>
 
-    <section class="book-section container">
+    <section class="book-section container" id="legacy-book-benefits" hidden>
       <h2 class="section-title">La Llave del Reino: El Poder de la Gratitud</h2>
       <div class="crown">👑</div>
       <div class="features">
@@ -148,6 +149,27 @@
     }
 
     loadTestimonials();
+  </script>
+  <script type="module">
+    import { db, coverURL } from "./js/firebase-site.js";
+    import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
+    const section = document.querySelector(".featured-book");
+    try {
+      const snapshot = await getDocs(query(collection(db,"books"),where("published","==",true)));
+      const books = snapshot.docs.filter(d=>typeof d.data().title==="string" && d.data().title.trim());
+      const chosen = books.find(d=>d.data().featured===true) || books[0];
+      if(chosen) {
+        const book=chosen.data(), img=section.querySelector("img");
+        const cover=coverURL(book.cover);
+        if(cover) { img.src=cover; img.alt="Portada de "+book.title; } else { img.removeAttribute("src"); img.hidden=true; }
+        section.querySelector("h2").textContent=book.title;
+        section.querySelector("div > p:not(.author-kicker)").textContent=book.description||"";
+        section.querySelector("a").href="/pages/libros.html?book="+encodeURIComponent(chosen.id);
+        section.hidden=false;
+        document.getElementById("legacy-book-benefits").hidden=chosen.id!=="legacy-1";
+        document.getElementById("legacy-book-benefits").querySelector("h2").textContent=book.title;
+      }
+    } catch(e) { console.error("No se pudo cargar el libro destacado",e); }
   </script>
 </body>
 </html>
