@@ -91,13 +91,13 @@
   </script>
 
   <script>
-    const API = 'http://localhost:3000';
+    const API = '';
     let allBooks = [];
 
     async function loadBooks() {
       try {
         const res = await fetch(`${API}/data/books.json`);
-        allBooks = (await res.json()).filter(b => b.published !== false);
+        allBooks = (await res.json()).filter(b => b.published !== false && b.title?.trim());
         renderList(allBooks);
         if (allBooks.length) showBook(0);
       } catch (e) {
@@ -107,8 +107,8 @@
 
     function renderList(books) {
       const list = document.getElementById('books-list');
-      list.innerHTML = books.map((book, i) => `
-        <div class="book-item" onclick="showBook(${i})" data-index="${i}">
+      list.innerHTML = books.map((book) => `
+        <div class="book-item" onclick="showBook(${allBooks.indexOf(book)})" data-index="${allBooks.indexOf(book)}">
           <h4>${book.title}</h4>
           <p>${book.author || ''}</p>
         </div>
